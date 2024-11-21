@@ -4,11 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Correlation Matrix Heatmap</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
     <h1>Correlation Matrix Heatmap</h1>
-    <div>
-        {{ heatmap_html|safe }}
-    </div>
+    <div id="heatmap">{{ heatmap_html|safe }}</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var heatmap = document.getElementById('heatmap').getElementsByClassName('plotly-graph-div')[0];
+            heatmap.on('plotly_click', function(data) {
+                var x = data.points[0].x;
+                var y = data.points[0].y;
+                window.location.href = `/scatter_plot?x=${x}&y=${y}`;
+            });
+        });
+    </script>
 </body>
 </html>
