@@ -81,5 +81,16 @@ def hiplot():
 
     return render_template('hiplot.html', hip_html=hip_html)
 
+@app.route('/pie')
+def pie_chart():
+    return render_template('pie.html')
+
+@app.route('/corr_map')
+def corr_map():
+    return render_template('corr_map.html')
+
+@app.route('/corr_churn')
+def corr_churn():
+    return render_template('corr_churn.html')
 if __name__ == '__main__':
     app.run(debug=True)
