@@ -1,13 +1,11 @@
 This is the correlation heatmap for the [data](https://www.kaggle.com/datasets/blastchar/telco-customer-churn).
 
-You can click the small block on the website to show the figure of linear regression.
+You can click the small blocks on the website to show the corresponding figure of linear regression.
 
-
-
-First install the related pakages:
+To run the website, first install these packages:
 
 ```sh
-conda install -c conda-forge flask pandas plotly
+conda install -c conda-forge flask pandas plotly hiplot
 ```
 
 then 

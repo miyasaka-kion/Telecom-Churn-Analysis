@@ -2,6 +2,8 @@ from flask import Flask, render_template, request
 import pandas as pd
 import plotly.express as px
 import plotly.io as pio
+import hiplot as hip
+import tempfile
 
 app = Flask(__name__)
 
@@ -38,7 +40,6 @@ def correlation_heatmap():
 
     return render_template('index.html', heatmap_html=heatmap_html)
 
-
 @app.route('/scatter_plot')
 def scatter_plot():
     x = request.args.get('x')
@@ -63,6 +64,22 @@ def scatter_plot():
     else:
         return "Invalid parameters", 400
 
+@app.route('/hiplot')
+def hiplot():
+    # Preprocess data for Hiplot
+    data_filtered = df[['PaymentMethod','PaperlessBilling', 'InternetService','MonthlyCharges', 'TotalCharges', 'Churn']]
+    data_filtered['Churn'] = data_filtered['Churn'].map({'Yes': 1, 'No': 0})
+
+    # Create Hiplot experiment
+    hip_data = hip.Experiment.from_dataframe(data_filtered)
+
+    # Save Hiplot visualization to a temporary HTML file
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.html') as tmp:
+        hip_data.to_html(tmp.name)
+        tmp.seek(0)
+        hip_html = tmp.read().decode('utf-8')
+
+    return render_template('hiplot.html', hip_html=hip_html)
 
 if __name__ == '__main__':
     app.run(debug=True)

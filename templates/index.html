@@ -5,8 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Correlation Matrix Heatmap</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #heatmap {
+            width: 100%;
+            max-width: 1200px;
+            height: 800px;
+            margin: auto;
+        }
+        nav {
+            margin-top: 20px;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 15px;
+        }
+    </style>
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+<!--            <li><a href="/scatter_plot">Scatter Plot</a></li>-->
+            <li><a href="/hiplot">Hiplot Visualization</a></li>
+        </ul>
+    </nav>
     <h1>Correlation Matrix Heatmap</h1>
     <div id="heatmap">{{ heatmap_html|safe }}</div>
     <script>
@@ -15,7 +45,7 @@
             heatmap.on('plotly_click', function(data) {
                 var x = data.points[0].x;
                 var y = data.points[0].y;
-                window.location.href = `/scatter_plot?x=${x}&y=${y}`;
+                window.location.href = `/scatter_plot?x=${encodeURIComponent(x)}&y=${encodeURIComponent(y)}`;
             });
         });
     </script>
