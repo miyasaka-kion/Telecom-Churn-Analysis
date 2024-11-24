@@ -4,6 +4,12 @@ To run the website, first install these packages (we assume that you have activa
 conda install -c conda-forge flask pandas plotly hiplot
 ```
 
+```sh 
+pip install statsmodels
+```
+
+
+
 then 
 
 ```sh

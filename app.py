@@ -5,6 +5,7 @@ import plotly.io as pio
 import hiplot as hip
 import tempfile
 
+
 app = Flask(__name__)
 
 # Load the dataset
@@ -92,5 +93,28 @@ def corr_map():
 @app.route('/corr_churn')
 def corr_churn():
     return render_template('corr_churn.html')
+
+
+@app.route('/sunburst')
+def sunburst():
+    fig = px.sunburst(df,
+                      path=['Churn', 'Contract', 'PaymentMethod', 'InternetService'],
+                      values='MonthlyCharges',
+                      color='Churn',
+                      color_continuous_scale='RdBu',
+                      title='Telco Customer Churn Sunburst Chart',
+                      labels={'Churn': 'Churn'})
+
+    fig.update_layout(
+        transition_duration=500,  # Add animation duration
+        width=1200,  # Set the width of the chart
+        height=800   # Set the height of the chart
+    )
+
+    sunburst_html = pio.to_html(fig, full_html=False)
+
+    return render_template('sunburst.html', sunburst_html=sunburst_html)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
