@@ -3,54 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Correlation Matrix Heatmap</title>
+    <!-- <title>Data Columns Hierarchy</title> -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            margin: 20px;
         }
-        #heatmap {
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            position: fixed;
+            top: 0;
             width: 100%;
-            max-width: 1200px;
-            height: 800px;
-            margin: auto;
+            z-index: 1000;
         }
-        nav {
-            margin-top: 20px;
-        }
-        nav ul {
-            list-style: none;
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
             padding: 0;
         }
-        nav ul li {
-            display: inline;
-            margin-right: 15px;
+        .navbar li {
+            float: left;
+        }
+        .navbar li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .navbar li a:hover {
+            background-color: #111;
+        }
+        .content {
+            padding: 16px;
+            margin-top: 50px; /* Add a top margin to avoid content overlay */
         }
     </style>
 </head>
 <body>
-    <nav>
+    <div class="navbar">
         <ul>
             <li><a href="/">Home</a></li>
-<!--            <li><a href="/scatter_plot">Scatter Plot</a></li>-->
             <li><a href="/hiplot">Hiplot Visualization</a></li>
             <li><a href="/pie">Pies and Bars(Temp)</a></li>
             <li><a href="/corr_map">Correlation Matrix(Temp)</a></li>
             <li><a href="/corr_churn">Correlation with Churn(Temp)</a></li>
+            <li><a href="/sunburst">Sunburst Chart(Temp)</a></li>
         </ul>
-    </nav>
-    <h1>Correlation Matrix Heatmap</h1>
-    <div id="heatmap">{{ heatmap_html|safe }}</div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var heatmap = document.getElementById('heatmap').getElementsByClassName('plotly-graph-div')[0];
-            heatmap.on('plotly_click', function(data) {
-                var x = data.points[0].x;
-                var y = data.points[0].y;
-                window.location.href = `/scatter_plot?x=${encodeURIComponent(x)}&y=${encodeURIComponent(y)}`;
-            });
-        });
-    </script>
+    </div>
+    <div class="content">
+        <h1> Visualization: Telco Customer Churn </h1>
+        <div>{{ tree_html|safe }}</div>
+    </div>
 </body>
 </html>
