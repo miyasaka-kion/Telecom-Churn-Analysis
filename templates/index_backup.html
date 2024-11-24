@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar li {
+            float: left;
+        }
+        .navbar li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .navbar li a:hover {
+            background-color: #111;
+        }
+        .content {
+            padding: 16px;
+            margin-top: 50px; /* Add a top margin to avoid content overlay */
+            display: flex;
+            justify-content: space-between;
+        }
+        .chart-container {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/hiplot">Hiplot Visualization</a></li>
+            <li><a href="/pie">Pies and Bars(Temp)</a></li>
+            <li><a href="/corr_map">Correlation Matrix(Temp)</a></li>
+            <li><a href="/corr_churn">Correlation with Churn(Temp)</a></li>
+            <!-- <li><a href="/sunburst">Sunburst Chart(Temp)</a></li> -->
+        </ul>
+    </div>
+    <div class="content">
+        <div class="chart-container">
+            <h1>Data Columns Hierarchy</h1>
+            <div>{{ tree_html|safe }}</div>
+        </div>
+        <div class="chart-container">
+            <!-- <h1>Telco Customer Churn Sunburst Chart</h1> -->
+            <div class="content" style="margin-top: 90px; margin-left: -50px;">
+            <div>{{ sunburst_html|safe }}</div>
+        </div>
+    </div>
+</body>
+</html>

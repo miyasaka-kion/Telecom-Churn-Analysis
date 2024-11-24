@@ -1,61 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <title>Data Columns Hierarchy</title> -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        .navbar {
-            overflow: hidden;
-            background-color: #333;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-        .navbar ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-        .navbar li {
-            float: left;
-        }
-        .navbar li a {
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-        .navbar li a:hover {
-            background-color: #111;
-        }
-        .content {
-            padding: 16px;
-            margin-top: 50px; /* Add a top margin to avoid content overlay */
-        }
-    </style>
-</head>
-<body>
-    <div class="navbar">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/hiplot">Hiplot Visualization</a></li>
-            <li><a href="/pie">Pies and Bars(Temp)</a></li>
-            <li><a href="/corr_map">Correlation Matrix(Temp)</a></li>
-            <li><a href="/corr_churn">Correlation with Churn(Temp)</a></li>
-            <li><a href="/sunburst">Sunburst Chart(Temp)</a></li>
-        </ul>
-    </div>
-    <div class="content">
-        <h1> Visualization: Telco Customer Churn </h1>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="charts-container" style="display: flex; justify-content: space-between;">
+    <div class="chart-container" style="flex: 1;">
+        <h1>Data Columns Hierarchy</h1>
         <div>{{ tree_html|safe }}</div>
     </div>
-</body>
-</html>
+    <div class="chart-container second" style="flex: 1; margin-top: 90px; margin-left: -100px;">
+        <!-- <h1>Telco Customer Churn Sunburst Chart</h1> -->
+        <div>{{ sunburst_html|safe }}</div>
+    </div>
+</div>
+{% endblock %}
