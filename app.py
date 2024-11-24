@@ -15,7 +15,7 @@ df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
 df_n = pd.get_dummies(df.drop(columns=['customerID', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies']), drop_first=True)
 corr_matrix = df_n.corr()
 
-@app.route('/corr_py')
+@app.route('/corr_heat_py')
 def correlation_heatmap():
     fig = px.imshow(corr_matrix,
                     labels=dict(color="Correlation"),
@@ -40,7 +40,7 @@ def correlation_heatmap():
 
     heatmap_html = pio.to_html(fig, full_html=False)
 
-    return render_template('index.html', heatmap_html=heatmap_html)
+    return render_template('corr_heat_py.html', heatmap_html=heatmap_html)
 
 @app.route('/scatter_plot')
 def scatter_plot():
@@ -85,14 +85,17 @@ def hiplot():
 
 @app.route('/pie')
 def pie_chart():
+    # tableau
     return render_template('pie.html')
 
 @app.route('/corr_map')
 def corr_map():
+    # tableau
     return render_template('corr_map.html')
 
 @app.route('/corr_churn')
 def corr_churn():
+    # tableau
     return render_template('corr_churn.html')
 
 @app.route('/sunburst')
@@ -185,6 +188,7 @@ def tree():
 
     return render_template('index.html', tree_html=tree_html, sunburst_html=sunburst_html)
 
-# index page
+
+
 if __name__ == '__main__':
     app.run(debug=True)
