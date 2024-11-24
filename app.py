@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import pandas as pd
 import plotly.express as px
 import plotly.io as pio
+import plotly.graph_objects as go
 import hiplot as hip
 import tempfile
 
@@ -14,7 +15,7 @@ df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
 df_n = pd.get_dummies(df.drop(columns=['customerID', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies']), drop_first=True)
 corr_matrix = df_n.corr()
 
-@app.route('/')
+@app.route('/corr_py')
 def correlation_heatmap():
     fig = px.imshow(corr_matrix,
                     labels=dict(color="Correlation"),
@@ -94,16 +95,18 @@ def corr_map():
 def corr_churn():
     return render_template('corr_churn.html')
 
-
 @app.route('/sunburst')
 def sunburst():
-    fig = px.sunburst(df,
+    # Count the occurrences of 'Yes' and 'No' in the 'Churn' column
+    df_counts = df.groupby(['Churn', 'Contract', 'PaymentMethod', 'InternetService']).size().reset_index(name='Count')
+
+    fig = px.sunburst(df_counts,
                       path=['Churn', 'Contract', 'PaymentMethod', 'InternetService'],
-                      values='MonthlyCharges',
+                      values='Count',
                       color='Churn',
                       color_continuous_scale='RdBu',
                       title='Telco Customer Churn Sunburst Chart',
-                      labels={'Churn': 'Churn'})
+                      labels={'Churn': 'Churn', 'Contract': 'Contract', 'PaymentMethod': 'Payment Method', 'InternetService': 'Internet Service'})
 
     fig.update_layout(
         transition_duration=500,  # Add animation duration
@@ -111,10 +114,77 @@ def sunburst():
         height=800   # Set the height of the chart
     )
 
+    # fig.update_traces(
+    #     hovertemplate='%{meta[0]}<extra></extra>',
+    #     meta=['Churn', 'Contract', 'PaymentMethod', 'InternetService']
+    # )
+
     sunburst_html = pio.to_html(fig, full_html=False)
 
     return render_template('sunburst.html', sunburst_html=sunburst_html)
 
+@app.route('/')
+def tree():
+    columns_hierarchy = {
+        'Customer': {
+            'Demographics': ['Gender', 'SeniorCitizen', 'Partner', 'Dependents'],
+            'Services': ['PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies'],
+            'Account': ['Contract', 'PaperlessBilling', 'PaymentMethod', 'MonthlyCharges', 'TotalCharges']
+        }
+    }
 
+    def build_tree(data, parent_name=''):
+        labels = []
+        parents = []
+        for key, value in data.items():
+            labels.append(key)
+            parents.append(parent_name)
+            if isinstance(value, dict):
+                child_labels, child_parents = build_tree(value, key)
+                labels.extend(child_labels)
+                parents.extend(child_parents)
+            else:
+                labels.extend(value)
+                parents.extend([key] * len(value))
+        return labels, parents
+
+    labels, parents = build_tree(columns_hierarchy)
+
+    fig_tree = go.Figure(go.Treemap(
+        labels=labels,
+        parents=parents,
+        root_color="lightgrey"
+    ))
+
+    fig_tree.update_layout(
+        title='Data Columns Hierarchy',
+        width=850,
+        height=650
+    )
+
+    tree_html = pio.to_html(fig_tree, full_html=False)
+
+    # Generate sunburst chart
+    df_counts = df.groupby(['Churn', 'Contract', 'PaymentMethod', 'InternetService']).size().reset_index(name='Count')
+
+    fig_sunburst = px.sunburst(df_counts,
+                               path=['Churn', 'Contract', 'PaymentMethod', 'InternetService'],
+                               values='Count',
+                               color='Churn',
+                               color_continuous_scale='RdBu',
+                               # title='Telco Customer Churn Sunburst Chart',
+                               labels={'Churn': 'Churn', 'Contract': 'Contract', 'PaymentMethod': 'Payment Method', 'InternetService': 'Internet Service'})
+
+    fig_sunburst.update_layout(
+        transition_duration=500,
+        width=850,
+        height=650
+    )
+
+    sunburst_html = pio.to_html(fig_sunburst, full_html=False)
+
+    return render_template('index.html', tree_html=tree_html, sunburst_html=sunburst_html)
+
+# index page
 if __name__ == '__main__':
     app.run(debug=True)

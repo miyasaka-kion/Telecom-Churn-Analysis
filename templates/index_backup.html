@@ -1,5 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+
+{% block content %}
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,11 +65,8 @@
             <h1>Data Columns Hierarchy</h1>
             <div>{{ tree_html|safe }}</div>
         </div>
-        <div class="chart-container">
-            <!-- <h1>Telco Customer Churn Sunburst Chart</h1> -->
-            <div class="content" style="margin-top: 90px; margin-left: -50px;">
-            <div>{{ sunburst_html|safe }}</div>
-        </div>
     </div>
 </body>
 </html>
+    
+{% endblock %}

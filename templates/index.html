@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="charts-container" style="display: flex; justify-content: space-between;">
-    <div class="chart-container" style="flex: 1;">
-        <h1>Data Columns Hierarchy</h1>
-        <div>{{ tree_html|safe }}</div>
+<div class="content">
+    <div class="charts-container" style="display: flex; justify-content: space-between;">
+        <div class="chart-container" style="flex: 1;">
+            <h1>Data Columns Hierarchy</h1>
+            <div>{{ tree_html|safe }}</div>
+        </div>
+        <div class="chart-container second" style="flex: 1; margin-top: 100px; margin-left: -100px;">
+            <!-- <h1>Telco Customer Churn Sunburst Chart</h1> -->
+            <div>{{ sunburst_html|safe }}</div>
+        </div>
     </div>
-    <div class="chart-container second" style="flex: 1; margin-top: 90px; margin-left: -100px;">
-        <!-- <h1>Telco Customer Churn Sunburst Chart</h1> -->
-        <div>{{ sunburst_html|safe }}</div>
-    </div>
-</div>
+<div class="content"></div>
 {% endblock %}
