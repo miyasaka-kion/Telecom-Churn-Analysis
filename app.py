@@ -53,13 +53,16 @@ def scatter_plot():
     y_original = dummy_columns.get(y, y)
 
     if x_original in df.columns and y_original in df.columns:
-        # Ensure the columns are numeric
-        if not pd.api.types.is_numeric_dtype(df[x_original]):
-            df[x_original] = pd.factorize(df[x_original])[0]
-        if not pd.api.types.is_numeric_dtype(df[y_original]):
-            df[y_original] = pd.factorize(df[y_original])[0]
+        # Create a copy of the DataFrame to avoid modifying the original
+        df_copy = df.copy()
 
-        fig = px.scatter(df, x=x_original, y=y_original, trendline='ols')
+        # Ensure the columns are numeric
+        if not pd.api.types.is_numeric_dtype(df_copy[x_original]):
+            df_copy[x_original] = pd.factorize(df_copy[x_original])[0]
+        if not pd.api.types.is_numeric_dtype(df_copy[y_original]):
+            df_copy[y_original] = pd.factorize(df_copy[y_original])[0]
+
+        fig = px.scatter(df_copy, x=x_original, y=y_original, trendline='ols')
         fig.update_layout(title=f'Scatter Plot of {x_original} vs {y_original}')
         scatter_html = pio.to_html(fig, full_html=False)
         return render_template('scatter_plot.html', scatter_html=scatter_html)
