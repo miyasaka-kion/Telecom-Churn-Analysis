@@ -93,12 +93,12 @@ def pie_chart():
 
 @app.route('/corr_map')
 def corr_map():
-    # tableau
+    # tableau:
     return render_template('corr_map.html')
 
 @app.route('/corr_churn')
 def corr_churn():
-    # tableau
+    # tableau: single var
     return render_template('corr_churn.html')
 
 @app.route('/sunburst')
